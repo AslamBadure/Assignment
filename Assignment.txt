@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class NetworkTowers {
+public class DemoTowers {
 	 public int[] getBestLocation(int[][] towers, int radius) {
 	        int n = towers.length;
 	        int[][] reachable = new int[n][n];
@@ -34,7 +34,7 @@ public class NetworkTowers {
 	    }
 	    
 	    public static void main(String[] args) {
-	        NetworkTowers nt = new NetworkTowers();
+	        DemoTowers nt = new DemoTowers();
 	        int[][] towers = {{1,2,5}, {2,1,7}, {3,1,9}};
 	        int radius = 2;
 	        int[] bestLocation = nt.getBestLocation(towers, radius);
