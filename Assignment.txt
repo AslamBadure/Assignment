@@ -1,0 +1,99 @@
+import java.util.*;
+
+public class NetworkTowers {
+	 public int[] getBestLocation(int[][] towers, int radius) {
+	        int n = towers.length;
+	        int[][] reachable = new int[n][n];
+	        for (int i = 0; i < n; i++) {
+	            for (int j = 0; j < n; j++) {
+	                int dist = (int) Math.sqrt(Math.pow(towers[i][0] - towers[j][0], 2) + Math.pow(towers[i][1] - towers[j][1], 2));
+	                if (dist <= radius) {
+	                    reachable[i][j] = 1;
+	                }
+	            }
+	        }
+	        int[] bestLocation = new int[2];
+	        int bestQuality = Integer.MIN_VALUE;
+	        for (int x = 0; x <= 50; x++) {
+	            for (int y = 0; y <= 50; y++) {
+	                int quality = 0;
+	                for (int i = 0; i < n; i++) {
+	                    if (reachable[i][i] == 1) {
+	                        int dist = (int) Math.sqrt(Math.pow(x - towers[i][0], 2) + Math.pow(y - towers[i][1], 2));
+	                        quality += towers[i][2] / (1 + dist);
+	                    }
+	                }
+	                if (quality > bestQuality) {
+	                    bestQuality = quality;
+	                    bestLocation[0] = x;
+	                    bestLocation[1] = y;
+	                }
+	            }
+	        }
+	        return bestLocation;
+	    }
+	    
+	    public static void main(String[] args) {
+	        NetworkTowers nt = new NetworkTowers();
+	        int[][] towers = {{1,2,5}, {2,1,7}, {3,1,9}};
+	        int radius = 2;
+	        int[] bestLocation = nt.getBestLocation(towers, radius);
+	        System.out.println(Arrays.toString(bestLocation));
+	    }
+}
+
+
+
+-------------------------------OR------------------------------------------
+import java.util.*;
+
+public class Solution {
+    public int[] bestCoordinate(int[][] towers, int radius) {
+        int maxQuality = 0;
+        int[] bestCoordinate = new int[] {-1, -1};
+        
+        for (int x = 0; x <= 50; x++) {
+            for (int y = 0; y <= 50; y++) {
+                int quality = calculateNetworkQuality(towers, radius, x, y);
+                if (quality > maxQuality) {
+                    maxQuality = quality;
+                    bestCoordinate = new int[] {x, y};
+                }
+            }
+        }
+        
+        return bestCoordinate;
+    }
+    
+    private int calculateNetworkQuality(int[][] towers, int radius, int x, int y) {
+        int quality = 0;
+        
+        for (int[] tower : towers) {
+            int distance = calculateDistance(tower[0], tower[1], x, y);
+            if (distance <= radius) {
+                quality += tower[2] / (1 + Math.sqrt(distance));
+            }
+        }
+        
+        return quality;
+    }
+    
+    private int calculateDistance(int x1, int y1, int x2, int y2) {
+        return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
+    
+    public static void main(String[] args) {
+        int[][] towers = {{1,2,5},{2,1,7},{3,1,9}};
+        int radius = 2;
+        
+        Solution solution = new Solution();
+        int[] result = solution.bestCoordinate(towers, radius);
+        
+        System.out.println(Arrays.toString(result)); // Output: [2, 1]
+    }
+}
+
+
+
+
+
